@@ -1,4 +1,4 @@
-const express = require('express');
+import express from "express";
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('http://localhost:3000/api/stuff', (req, res, next) => {
+app.use('/', (req, res, next) => {
 
   const stuff = [
     {
@@ -32,3 +32,5 @@ app.use('http://localhost:3000/api/stuff', (req, res, next) => {
   ];
   res.status(200).json(stuff);
 });
+  app.listen(3000);
+  console.log("serverStarted")
