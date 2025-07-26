@@ -1,6 +1,12 @@
 import express from "express";
+import env from './config/env.js';
+import connectToDB from './config/db.js';
+
+connectToDB(env.env)
 
 const app = express();
+
+app.use(express.json());
 
 //middleware général utilisé par toutes les routes
 app.use((req, res, next) => {
@@ -10,7 +16,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', (req, res, next) => {
+// GET
+app.get('/', (req, res, next) => {
 
   const stuff = [
     {
@@ -32,5 +39,24 @@ app.use('/', (req, res, next) => {
   ];
   res.status(200).json(stuff);
 });
-  app.listen(3000);
-  console.log("serverStarted")
+
+// POST
+app.post('/stuff', (req, res, next) => {
+// body
+
+delete req.body._id; // pour retirer le champ "id" de la requête.
+const thing = new Thing({
+
+ ...req.body, // <=> title: req.body.title, l'opérateur "..." copie les champs contenus en DB dans l'ordre.
+
+});
+thing.save() // enregistre un objet en DB
+.then(()=> res.status(201).json({message: 'Objet enregistré' }))
+.catch(error => res.status(400).json({ error: error }));
+
+});
+app.listen(process.env.SERVER_LISTENING_PORT, () => {
+  console.info(`Server Started at http://localhost:${process.env.SERVER_LISTENING_PORT}`)
+})
+
+export default env

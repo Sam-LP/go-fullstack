@@ -1,5 +1,5 @@
-const http = require('http'); // import du package + accès a l'objet HTTP qui va permettre de créer un serveur
-const app = require('./app'); // Route qui permet d'importer app, mais on utilisera le "import" classique pour le projet (import x from y).
+import http from 'http'; // import du package + accès a l'objet HTTP qui va permettre de créer un serveur
+import app from './app.js'; // Route qui permet d'importer app, mais on utilisera le "import" classique pour le projet (import x from y).
 
 // Fonction qui permet de retourner un port "normalisé" (donc erreur si le port "-27" ou "taranpion" est choisi)
 const normalizePort = val => {
@@ -14,7 +14,7 @@ const normalizePort = val => {
   return false;
 };
 const port = normalizePort(process.env.PORT || 3000);
-app.set(port, port);
+// app.set(port, port);
 
 // Gestion des erreurs
 const errorHandler = error => {
