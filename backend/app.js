@@ -1,6 +1,7 @@
 import express from "express";
 import env from './config/env.js';
 import connectToDB from './config/db.js';
+import stuffRoutes from './routes/stuff.js'
 
 connectToDB(env.env)
 
@@ -36,6 +37,7 @@ app.get('/', (req, res, next) => {
       price: 2900,
       userId: 'qsomihvqios',
     },
+
   ];
   res.status(200).json(stuff);
 });
@@ -44,19 +46,24 @@ app.get('/', (req, res, next) => {
 app.post('/stuff', (req, res, next) => {
 // body
 
-delete req.body._id; // pour retirer le champ "id" de la requête.
-const thing = new Thing({
+console.log(req.body);
+res.status(201).json({})
+  const thing = new Thing({
 
- ...req.body, // <=> title: req.body.title, l'opérateur "..." copie les champs contenus en DB dans l'ordre.
+  ...req.body, // <=> title: req.body.title, l'opérateur "..." copie les champs contenus en DB dans l'ordre.
+
+  });
+  thing.save() // enregistre un objet en DB
+  .then(()=> res.status(201).json({message: 'Objet enregistré' }))
+  .catch(error => res.status(400).json({ error: error }));
 
 });
-thing.save() // enregistre un objet en DB
-.then(()=> res.status(201).json({message: 'Objet enregistré' }))
-.catch(error => res.status(400).json({ error: error }));
 
-});
+//Lien vers les routes crées
+
+app.use('/stuff', stuffRoutes)
+
+// TODO: récup des données en base
 app.listen(process.env.SERVER_LISTENING_PORT, () => {
   console.info(`Server Started at http://localhost:${process.env.SERVER_LISTENING_PORT}`)
 })
-
-export default env
