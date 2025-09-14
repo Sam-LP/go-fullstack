@@ -1,17 +1,31 @@
 //Fichier qui contiendra des "Things", en utilisant le modèle de données correspondant.
-import Thing from "../models/Thing.js"
+import Thing from "../models/thing.js"
 
 const thingController = {
-    createThing : (req, res) => {
+    getThings : async (req, res) => {
 
-        delete req.body._id; // pour retirer le champ "id" de la requête.
+      const things = await Thing.find()
+      res.status(200).json(things)
+      
+    },
+    createThing : async (req, res) => {
+console.log(req)
+        // delete req.body._id; // pour retirer le champ "id" de la requête.
 
         // Nouvel objet
+        const { title, content, comment } = req.body
+        if (!title || !content || !comment ) {
+          return res.status(400).json({
+          success: false,
+          message: 'Tous les champs obligatoires doivent être remplis'
+        });
+      }
         const thing = new Thing({
+        
             // correspond aux éléments qui vont être crées en base.
-            title: req.body.title,
-            article: req.body.article,
-            comment: req.body.comment,
+            title,
+            content,
+            comment,
         })
 
         thing.save()

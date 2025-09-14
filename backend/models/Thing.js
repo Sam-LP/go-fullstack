@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
-const thingSchema = mongoose.Schema({
+const thingSchema = new mongoose.Schema({
 // objets qui seront implémentés en DB (préalablement créée depuis l'interface de Atlas)
 title: { type: String, required:true }, // = 1 colonne en DB
-article: { author: String, title:String, nb:Number, content: String },
-comment: { author: String }
+content: { type:String },
+comment: { type:String }
 // id géré automatiquement en DB
 // articleList : {article: [...]};
 })
-export default thingSchema
+const Thing = mongoose.model("Thing", thingSchema)
+
+export default Thing

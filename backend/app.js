@@ -1,14 +1,15 @@
 import express from "express";
 import env from './config/env.js';
 import connectToDB from './config/db.js';
-import stuffRoutes from './routes/stuff.js'
+import stuffRoutes from './routes/stuff.js';
+import bodyParser from "body-parser";
 
 connectToDB(env.env)
 
 const app = express();
 
 app.use(express.json());
-
+app.use(bodyParser.json())
 //middleware général utilisé par toutes les routes
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); // * = tout le monde peut utilser cette route
@@ -42,28 +43,10 @@ app.get('/', (req, res, next) => {
   res.status(200).json(stuff);
 });
 
-// POST
-app.post('/stuff', (req, res, next) => {
-// body
-
-console.log(req.body);
-res.status(201).json({})
-  const thing = new Thing({
-
-  ...req.body, // <=> title: req.body.title, l'opérateur "..." copie les champs contenus en DB dans l'ordre.
-
-  });
-  thing.save() // enregistre un objet en DB
-  .then(()=> res.status(201).json({message: 'Objet enregistré' }))
-  .catch(error => res.status(400).json({ error: error }));
-
-});
-
 //Lien vers les routes crées
 
 app.use('/stuff', stuffRoutes)
 
-// TODO: récup des données en base
 app.listen(process.env.SERVER_LISTENING_PORT, () => {
   console.info(`Server Started at http://localhost:${process.env.SERVER_LISTENING_PORT}`)
 })
