@@ -1,5 +1,5 @@
 //Fichier qui contiendra des "Things", en utilisant le modèle de données correspondant.
-import Thing from "../models/thing.js"
+import Thing from "../models/Thing.js"
 
 const thingController = {
     getThings : async (req, res) => {
@@ -9,7 +9,6 @@ const thingController = {
       
     },
     createThing : async (req, res) => {
-console.log(req)
         // delete req.body._id; // pour retirer le champ "id" de la requête.
 
         // Nouvel objet
@@ -28,14 +27,13 @@ console.log(req)
             comment,
         })
 
-        thing.save()
-              .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
-      .catch(
-        error => {
-          res.status(400).json({ error: error})
+        try {
+          await thing.save()
+          return res.status(201).json({ message: 'Objet enregistré !'})
+        } catch (error) {
+          return res.status(400).json({ error: error })
         }
-    )
-}
 
+}
 }
 export default thingController
