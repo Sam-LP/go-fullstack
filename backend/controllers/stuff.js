@@ -50,7 +50,7 @@ const thingController = {
     }
   },
   deleteThing: async (req, res) => {
-    const thing = await Thing.deleteOne(req.body.id)
+    await Thing.deleteOne(req.body.id)
 
     try {
       return res.status(201).json({ message: "L'objet a bien été supprimé." })
