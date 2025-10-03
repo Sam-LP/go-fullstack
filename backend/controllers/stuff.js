@@ -39,15 +39,26 @@ const thingController = {
   },
   // PUT (by id)
   updateThing: async (req, res) => {
-    const thing = getOneThing()
+    let { title, content, comment } = req.body
+    let id = req.params.id
 
-    try {
-      await thing.save()
+    Thing.findOneAndUpdate(
+      { _id: id },
+      {
+        title: title,
+        content: content,
+        comment: comment,
+      },
+      { new: true },
+    )
+      .then((updatedThing) => res.json(updatedThing))
+      .catch((err) => res.status(400).json("Error : " + err))
+    // try {
 
-      return res.status(201).json({ message: "Objet modifié !" })
-    } catch (error) {
-      return res.status(400).json({ error: error })
-    }
+    //   return res.status(201).json({ message: "Objet modifié !" })
+    // } catch (error) {
+    //   return res.status(400).json({ error: error })
+    // }
   },
   deleteThing: async (req, res) => {
     await Thing.deleteOne(req.body.id)
