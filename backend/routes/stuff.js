@@ -1,12 +1,13 @@
 import express from "express"
 const router = express.Router()
 
-import thingController from "../controllers/stuff.js"
+import { ThingsController } from "../controllers/stuff.js"
+const thingsController = new ThingsController()
 
-router.get("/", thingController.getThings)
-router.get("/:id", thingController.getOneThing)
-router.post("/", thingController.createThing)
-router.put("/:id", thingController.updateThing)
-router.delete("/:id", thingController.deleteThing)
+router.get("/", thingsController.getThings)
+router.get("/:id", thingsController.getOneThing)
+router.post("/", thingsController.createThing)
+router.put("/:id", thingsController.updateThing)
+router.delete("/:id", thingsController.deleteThing)
 
 export default router

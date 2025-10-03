@@ -2,22 +2,23 @@
 // entre le modèle (/models/Thing.js) et la vue (Angular)
 import Thing from "../models/Thing.js"
 
-const thingController = {
+export class ThingsController {
   // GET (all)
-  getThings: async (req, res) => {
+  async getThings(req, res) {
     await Thing.find()
       .then((things) => res.status(200).json(things))
       .catch((error) => res.status(400).json("Erreur : " + error))
-  },
+  }
+
   // GET (un seul objet) par /stuff/:id dans la route
-  getOneThing: async (req, res) => {
+  async getOneThing(req, res) {
     await Thing.findById(req.params.id)
       .then((thing) => res.status(200).json(thing))
       .catch((error) => res.status(400).json("Erreur : " + error))
-  },
+  }
 
   // CREATION (POST) : tous les champs sont dans le body
-  createThing: async (req, res) => {
+  async createThing(req, res) {
     // Récupération des valeurs dans le request.body
     const { title, content, comment } = req.body
 
@@ -38,10 +39,10 @@ const thingController = {
       .save()
       .then((newDocument) => res.status(201).json(newDocument))
       .catch((error) => res.status(400).json("Error: " + error))
-  },
+  }
 
   // MODIFICATION (PUT) par /stuff/:id dans la route
-  updateThing: async (req, res) => {
+  async updateThing(req, res) {
     // Récupération de l'id et des variables dans le body
     let id = req.params.id
     let { title, content, comment } = req.body
@@ -58,10 +59,10 @@ const thingController = {
     )
       .then((updatedThing) => res.json(updatedThing))
       .catch((err) => res.status(400).json("Error : " + err))
-  },
+  }
 
   // SUPPRESSION (DELETE) par /stuff/:id dans la route
-  deleteThing: async (req, res) => {
+  async deleteThing(req, res) {
     // Récupération id
     const { id } = req.params
 
@@ -69,6 +70,5 @@ const thingController = {
     await Thing.deleteOne({ _id: id })
       .then((deleteResult) => res.status(200).json(deleteResult))
       .catch((error) => res.status(400).json("Error : " + error))
-  },
+  }
 }
-export default thingController
