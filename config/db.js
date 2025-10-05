@@ -8,7 +8,6 @@ const envFilename = `.env.${env}`
 
 // Import des variables d'environnement
 const config = dotenv.config({ path: envFilename }).parsed
-console.log(config)
 
 const connectionString = config.DB_CONNECT_STR
 console.log("DB Connection String : " + connectionString)
